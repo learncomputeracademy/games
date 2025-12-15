@@ -2,7 +2,6 @@
 
 Welcome to the games collection! Click on any game below to play:
 
-- [29 Whack A Mole Game](https://learncomputeracademy.github.io/games/29-Whack-A-Mole-Game)
 - [Archery Game](https://learncomputeracademy.github.io/games/Archery-Game)
 - [Breakout Game](https://learncomputeracademy.github.io/games/Breakout-Game)
 - [Crossy Road Game](https://learncomputeracademy.github.io/games/Crossy-Road-Game)
@@ -13,6 +12,7 @@ Welcome to the games collection! Click on any game below to play:
 - [Snake Game](https://learncomputeracademy.github.io/games/Snake-Game)
 - [Tetris Game](https://learncomputeracademy.github.io/games/Tetris-Game)
 - [Tower Blocks](https://learncomputeracademy.github.io/games/Tower-Blocks)
+- [Whack A Mole Game](https://learncomputeracademy.github.io/games/Whack-A-Mole-Game)
 - [Snake Reverse](https://learncomputeracademy.github.io/games/snake-reverse)
 
 ---
