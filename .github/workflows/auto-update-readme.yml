@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# update-readme.sh
+# Run this script whenever you add a new game folder
+
+echo "# Games Collection" > README.md
+echo "" >> README.md
+echo "Welcome to the games collection! Click on any game below to play:" >> README.md
+echo "" >> README.md
+
+# Loop through all directories
+for dir in */; do
+    dirname="${dir%/}"
+    
+    # Skip non-game directories
+    if [[ "$dirname" != ".github" && "$dirname" != "node_modules" && "$dirname" != ".git" ]]; then
+        # Convert folder name to title (e.g., snake-reverse -> Snake Reverse)
+        title=$(echo "$dirname" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
+        
+        echo "- [$title](https://learncomputeracademy.github.io/games/$dirname)" >> README.md
+    fi
+done
+
+echo "" >> README.md
+echo "---" >> README.md
+echo "*Last updated: $(date)*" >> README.md
+
+echo "README.md has been updated!"
