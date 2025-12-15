@@ -1,28 +1,52 @@
-#!/bin/bash
+name: Auto-update README with folder links
 
-# update-readme.sh
-# Run this script whenever you add a new game folder
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
 
-echo "# Games Collection" > README.md
-echo "" >> README.md
-echo "Welcome to the games collection! Click on any game below to play:" >> README.md
-echo "" >> README.md
-
-# Loop through all directories
-for dir in */; do
-    dirname="${dir%/}"
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
     
-    # Skip non-game directories
-    if [[ "$dirname" != ".github" && "$dirname" != "node_modules" && "$dirname" != ".git" ]]; then
-        # Convert folder name to title (e.g., snake-reverse -> Snake Reverse)
-        title=$(echo "$dirname" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
-        
-        echo "- [$title](https://learncomputeracademy.github.io/games/$dirname)" >> README.md
-    fi
-done
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-echo "" >> README.md
-echo "---" >> README.md
-echo "*Last updated: $(date)*" >> README.md
+      - name: Generate folder links
+        run: |
+          echo "# Games Collection" > README.md
+          echo "" >> README.md
+          echo "Welcome to the games collection! Click on any game below to play:" >> README.md
+          echo "" >> README.md
+          
+          for dir in */; do
+            dirname="${dir%/}"
+            
+            if [[ "$dirname" != ".github" && "$dirname" != "node_modules" && "$dirname" != ".git" ]]; then
+              title=$(echo "$dirname" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
+              
+              echo "- [$title](https://learncomputeracademy.github.io/games/$dirname)" >> README.md
+            fi
+          done
+          
+          echo "" >> README.md
+          echo "---" >> README.md
+          echo "*This README is automatically updated when new games are added.*" >> README.md
 
-echo "README.md has been updated!"
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update README with latest folders"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
